@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Property;
 
 class HomeController extends Controller
 {
@@ -23,7 +24,9 @@ class HomeController extends Controller
         $start_date = $request->input('start_date');
         $end_date = $request->input('end_date');
 
-        
+        $properties = Property::getAvailableProperties();
+
+
         return response()->view('welcome', compact('near_beach', 'accepts_pets', 'location', 'sleeps', 'beds', 'start_date', 'end_date'));
     }
 
