@@ -18,9 +18,48 @@
             body {
                 font-family: 'Nunito', sans-serif;
             }
+            input[type="text"] {
+                border: 1px solid black;
+            }
         </style>
     </head>
     <body class="antialiased">
         <h1>Laravel Cottages App</h1>
+
+        
+        <form method="GET" action="/">
+            @csrf
+            <label for="location">Location Search</label>
+            <input type="text" name="location" id="location" placeholder="Enter location" value={{ $location }}>
+
+            <label for="near_beach">Near Beach</label>
+            <input type="checkbox" name="near_beach" id="near_beach" @checked(old('near_beach', $near_beach)) >
+            <label for="accpets_pets">Accepts Pets</label>
+            <input type="checkbox" name="accepts_pets" id="accepts_pets"  @checked(old('accepts_pets', $accepts_pets))>
+            </br>
+            <label for="start_date">Start Date</label>
+            <input type="date" id="start_date" name="start_date" value="{{ old('start_date', $start_date) }}">
+            <label for="end_date">End Date</label>
+            <input type="date" id="end_date" name="end_date" value="{{ old('end_date', $end_date) }}">
+            </br>
+
+            <label for="sleeps">Minimum Sleeps</label>
+            <select name="sleeps" id="sleeps">
+                @for ($i=1; $i <= 8; $i++)
+                    <option value="{{$i}}" @selected($sleeps == $i)>{{$i}}</option>
+                @endfor
+            </select>
+
+            <label for="sleeps">Minimum Beds</label>
+            <select name="beds" id="beds">
+                @for ($i=1; $i <= 8; $i++)
+                    <option value="{{$i}}" @selected($beds == $i)>{{$i}}</option>
+                @endfor
+            </select>
+
+            </br>
+            <button type="submit">Search</button>
+        </form>
+
     </body>
 </html>

@@ -11,9 +11,20 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return response()->view('welcome');
+        // Validation call to custom Request would go here
+
+        $location = $request->input('location');
+        $near_beach = $request->input('near_beach');
+        $accepts_pets = $request->input('accepts_pets');
+        $sleeps = $request->input('sleeps');
+        $beds = $request->input('beds');
+        $start_date = $request->input('start_date');
+        $end_date = $request->input('end_date');
+
+        
+        return response()->view('welcome', compact('near_beach', 'accepts_pets', 'location', 'sleeps', 'beds', 'start_date', 'end_date'));
     }
 
     /**
