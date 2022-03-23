@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Property;
+use App\Models\Booking;
 
 class HomeController extends Controller
 {
@@ -23,8 +24,13 @@ class HomeController extends Controller
         $beds = $request->input('beds');
         $start_date = $request->input('start_date');
         $end_date = $request->input('end_date');
+        $bookedPropertyIds = array();
 
-        $properties = Property::getAvailableProperties($location, $near_beach, $accepts_pets, (int) $sleeps, (int) $beds);
+        if($start_date && $end_date) {
+            $bookedPropertyIds = Booking::getBookedPropertyIds($start_date, $end_date);
+        }
+
+        $properties = Property::getAvailableProperties($location, $near_beach, $accepts_pets, (int) $sleeps, (int) $beds, $bookedPropertyIds);
 
         return response()->view('welcome', compact('properties', 'near_beach', 'accepts_pets', 'location', 'sleeps', 'beds', 'start_date', 'end_date'));
     }

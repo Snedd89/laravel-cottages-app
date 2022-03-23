@@ -12,14 +12,15 @@ class Property extends Model
     /**
      * Query and return results.
      *
-     * @param  string  $location
-     * @param  mixed  $near_beach
-     * @param  mixed  $accepts_pets
-     * @param  int  $sleeps
-     * @param  int  $beds
+     * @param  string   $location
+     * @param  mixed    $near_beach
+     * @param  mixed    $accepts_pets
+     * @param  int      $sleeps
+     * @param  int      $beds
+     * @param  array    $bookedPropertyIds
      * @return \Illuminate\Support\Collection
      */
-    public static function getAvailableProperties(string $location = null, mixed $near_beach = null, mixed $accepts_pets = null, int $sleeps = 0, int $beds = 0)
+    public static function getAvailableProperties(string $location = null, mixed $near_beach = null, mixed $accepts_pets = null, int $sleeps = 0, int $beds = 0, array $bookedPropertyIds)
     {
         $query = Property::select(
             'properties.*',
@@ -51,8 +52,12 @@ class Property extends Model
             $query = $query->where('beds', '>=', $beds);
         }
 
+        $query->when(!empty($bookedPropertyIds), function ($q) use($bookedPropertyIds) {
+            return $q->whereNotIn('properties.__pk', $bookedPropertyIds);
+        }); 
+
         $result = $query->paginate(2);
-        
+
         return $result;
     }
 }
