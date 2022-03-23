@@ -21,8 +21,38 @@ class Property extends Model
      */
     public static function getAvailableProperties(string $location = null, mixed $near_beach = null, mixed $accepts_pets = null, int $sleeps = 0, int $beds = 0)
     {
-        $query = Property::all();
+        $query = Property::select(
+            'properties.*',
+            'locations.location_name as location_name'
+            )->leftJoin(
+                'locations',
+                'locations.__pk',
+                '=',
+                'properties._fk_location'
+            );
 
-        return $query;
+        if($location) {
+            $query = $query->where('location_name', 'like', "%$location%");
+        }
+
+        if($near_beach) {
+            $query = $query->where('near_beach', $near_beach);
+        }
+
+        if($accepts_pets) {
+            $query = $query->where('accepts_pets', $accepts_pets);
+        }
+
+        if($sleeps) {
+            $query = $query->where('sleeps', '>=', $sleeps);
+        }
+
+        if($beds) {
+            $query = $query->where('beds', '>=', $beds);
+        }
+
+        $result = $query->paginate(2);
+        
+        return $result;
     }
 }

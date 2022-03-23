@@ -24,10 +24,9 @@ class HomeController extends Controller
         $start_date = $request->input('start_date');
         $end_date = $request->input('end_date');
 
-        $properties = Property::getAvailableProperties();
+        $properties = Property::getAvailableProperties($location, $near_beach, $accepts_pets, (int) $sleeps, (int) $beds);
 
-
-        return response()->view('welcome', compact('near_beach', 'accepts_pets', 'location', 'sleeps', 'beds', 'start_date', 'end_date'));
+        return response()->view('welcome', compact('properties', 'near_beach', 'accepts_pets', 'location', 'sleeps', 'beds', 'start_date', 'end_date'));
     }
 
     /**

@@ -59,7 +59,20 @@
 
             </br>
             <button type="submit">Search</button>
+        
         </form>
+        
+        @isset($properties)
+        <ul>
+            @foreach ($properties as $property)
+                <li>
+                    <span>{{$property->property_name}}</span> - <span>{{$property->location_name}}</span>
+                </li>
+            @endforeach
+        </ul>
+
+        {{ $properties->appends(request()->input())->links(); }}
+        @endisset
 
     </body>
 </html>
